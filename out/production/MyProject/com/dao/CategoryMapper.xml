@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.CategoryMapper">
+  <resultMap id="BaseResultMap" type="model.Category">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cate_level" jdbcType="INTEGER" property="cateLevel" />
+    <result column="seq" jdbcType="INTEGER" property="seq" />
+    <result column="name_zh" jdbcType="VARCHAR" property="nameZh" />
+    <result column="name_en" jdbcType="VARCHAR" property="nameEn" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="display_flag" jdbcType="INTEGER" property="displayFlag" />
+    <result column="key_words" jdbcType="VARCHAR" property="keyWords" />
+    <result column="category_tax_code" jdbcType="VARCHAR" property="categoryTaxCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="creator_id" jdbcType="INTEGER" property="creatorId" />
+    <result column="operator_id" jdbcType="INTEGER" property="operatorId" />
+    <result column="industry_flag" jdbcType="BIT" property="industryFlag" />
+    <result column="hot_flag" jdbcType="BIT" property="hotFlag" />
+    <result column="company_flag" jdbcType="BIT" property="companyFlag" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, cate_level, seq, name_zh, name_en, parent_id, description, status, display_flag, 
+    key_words, category_tax_code, create_time, update_time, creator_id, operator_id, 
+    industry_flag, hot_flag, company_flag
+  </sql>
+  <select id="selectByExample" parameterType="model.CategoryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from category
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="model.CategoryExample">
+    delete from category
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="model.Category">
+    insert into category (id, cate_level, seq, 
+      name_zh, name_en, parent_id, 
+      description, status, display_flag, 
+      key_words, category_tax_code, create_time, 
+      update_time, creator_id, operator_id, 
+      industry_flag, hot_flag, company_flag
+      )
+    values (#{id,jdbcType=INTEGER}, #{cateLevel,jdbcType=INTEGER}, #{seq,jdbcType=INTEGER}, 
+      #{nameZh,jdbcType=VARCHAR}, #{nameEn,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{displayFlag,jdbcType=INTEGER}, 
+      #{keyWords,jdbcType=VARCHAR}, #{categoryTaxCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=INTEGER}, #{operatorId,jdbcType=INTEGER}, 
+      #{industryFlag,jdbcType=BIT}, #{hotFlag,jdbcType=BIT}, #{companyFlag,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="model.Category">
+    insert into category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cateLevel != null">
+        cate_level,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="nameZh != null">
+        name_zh,
+      </if>
+      <if test="nameEn != null">
+        name_en,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="displayFlag != null">
+        display_flag,
+      </if>
+      <if test="keyWords != null">
+        key_words,
+      </if>
+      <if test="categoryTaxCode != null">
+        category_tax_code,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="creatorId != null">
+        creator_id,
+      </if>
+      <if test="operatorId != null">
+        operator_id,
+      </if>
+      <if test="industryFlag != null">
+        industry_flag,
+      </if>
+      <if test="hotFlag != null">
+        hot_flag,
+      </if>
+      <if test="companyFlag != null">
+        company_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cateLevel != null">
+        #{cateLevel,jdbcType=INTEGER},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="nameZh != null">
+        #{nameZh,jdbcType=VARCHAR},
+      </if>
+      <if test="nameEn != null">
+        #{nameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="displayFlag != null">
+        #{displayFlag,jdbcType=INTEGER},
+      </if>
+      <if test="keyWords != null">
+        #{keyWords,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryTaxCode != null">
+        #{categoryTaxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="operatorId != null">
+        #{operatorId,jdbcType=INTEGER},
+      </if>
+      <if test="industryFlag != null">
+        #{industryFlag,jdbcType=BIT},
+      </if>
+      <if test="hotFlag != null">
+        #{hotFlag,jdbcType=BIT},
+      </if>
+      <if test="companyFlag != null">
+        #{companyFlag,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="model.CategoryExample" resultType="java.lang.Long">
+    select count(*) from category
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update category
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.cateLevel != null">
+        cate_level = #{record.cateLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.seq != null">
+        seq = #{record.seq,jdbcType=INTEGER},
+      </if>
+      <if test="record.nameZh != null">
+        name_zh = #{record.nameZh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nameEn != null">
+        name_en = #{record.nameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.displayFlag != null">
+        display_flag = #{record.displayFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.keyWords != null">
+        key_words = #{record.keyWords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryTaxCode != null">
+        category_tax_code = #{record.categoryTaxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creatorId != null">
+        creator_id = #{record.creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.operatorId != null">
+        operator_id = #{record.operatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.industryFlag != null">
+        industry_flag = #{record.industryFlag,jdbcType=BIT},
+      </if>
+      <if test="record.hotFlag != null">
+        hot_flag = #{record.hotFlag,jdbcType=BIT},
+      </if>
+      <if test="record.companyFlag != null">
+        company_flag = #{record.companyFlag,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update category
+    set id = #{record.id,jdbcType=INTEGER},
+      cate_level = #{record.cateLevel,jdbcType=INTEGER},
+      seq = #{record.seq,jdbcType=INTEGER},
+      name_zh = #{record.nameZh,jdbcType=VARCHAR},
+      name_en = #{record.nameEn,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      description = #{record.description,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=SMALLINT},
+      display_flag = #{record.displayFlag,jdbcType=INTEGER},
+      key_words = #{record.keyWords,jdbcType=VARCHAR},
+      category_tax_code = #{record.categoryTaxCode,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      creator_id = #{record.creatorId,jdbcType=INTEGER},
+      operator_id = #{record.operatorId,jdbcType=INTEGER},
+      industry_flag = #{record.industryFlag,jdbcType=BIT},
+      hot_flag = #{record.hotFlag,jdbcType=BIT},
+      company_flag = #{record.companyFlag,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="model.Category">
+    update category
+    <set>
+      <if test="cateLevel != null">
+        cate_level = #{cateLevel,jdbcType=INTEGER},
+      </if>
+      <if test="seq != null">
+        seq = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="nameZh != null">
+        name_zh = #{nameZh,jdbcType=VARCHAR},
+      </if>
+      <if test="nameEn != null">
+        name_en = #{nameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="displayFlag != null">
+        display_flag = #{displayFlag,jdbcType=INTEGER},
+      </if>
+      <if test="keyWords != null">
+        key_words = #{keyWords,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryTaxCode != null">
+        category_tax_code = #{categoryTaxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="operatorId != null">
+        operator_id = #{operatorId,jdbcType=INTEGER},
+      </if>
+      <if test="industryFlag != null">
+        industry_flag = #{industryFlag,jdbcType=BIT},
+      </if>
+      <if test="hotFlag != null">
+        hot_flag = #{hotFlag,jdbcType=BIT},
+      </if>
+      <if test="companyFlag != null">
+        company_flag = #{companyFlag,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.Category">
+    update category
+    set cate_level = #{cateLevel,jdbcType=INTEGER},
+      seq = #{seq,jdbcType=INTEGER},
+      name_zh = #{nameZh,jdbcType=VARCHAR},
+      name_en = #{nameEn,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT},
+      display_flag = #{displayFlag,jdbcType=INTEGER},
+      key_words = #{keyWords,jdbcType=VARCHAR},
+      category_tax_code = #{categoryTaxCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      creator_id = #{creatorId,jdbcType=INTEGER},
+      operator_id = #{operatorId,jdbcType=INTEGER},
+      industry_flag = #{industryFlag,jdbcType=BIT},
+      hot_flag = #{hotFlag,jdbcType=BIT},
+      company_flag = #{companyFlag,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
